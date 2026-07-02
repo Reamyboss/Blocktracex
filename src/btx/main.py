@@ -1,5 +1,7 @@
 import typer
 from rich import print
+from btx.inspect import inspect_project
+from btx.inspect_report import print_inspection_report
 
 from btx.scaffold import create_project
 from btx.doctor import run_doctor
@@ -56,6 +58,14 @@ def info():
     """Display information about the current project."""
     show_project_info()
 
+@app.command()
+def inspect():
+    """
+    Inspect the current Blocktracex project.
+    """
 
+    project = inspect_project()
+    print_inspection_report(project)
+    
 if __name__ == "__main__":
     app()
