@@ -2,6 +2,8 @@ import typer
 from rich import print
 from btx.inspect import inspect_project
 from btx.inspect_report import print_inspection_report
+from btx.architecture import detect_architecture
+from btx.architecture_report import print_architecture_report
 
 from btx.scaffold import create_project
 from btx.doctor import run_doctor
@@ -15,7 +17,14 @@ app = typer.Typer(
     no_args_is_help=True,
     rich_markup_mode="rich",
 )
+@app.command()
+def architecture():
+    """
+    Analyze the project's architecture.
+    """
 
+    architecture = detect_architecture()
+    print_architecture_report(architecture)
 
 @app.command()
 def version():
