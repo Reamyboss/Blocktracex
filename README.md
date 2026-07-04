@@ -1,2 +1,2 @@
 # project_egde
-AI-powered sports prediction SaaS
+AI-native engineering platform for intelligent project inspection, validation, architecture analysis, and verifiable software development.
