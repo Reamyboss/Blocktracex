@@ -4,6 +4,8 @@ from btx.inspect import inspect_project
 from btx.inspect_report import print_inspection_report
 from btx.architecture import detect_architecture
 from btx.architecture_report import print_architecture_report
+from btx.knowledge import build_project_knowledge
+from btx.knowledge_report import print_knowledge_report
 
 from btx.scaffold import create_project
 from btx.doctor import run_doctor
@@ -25,6 +27,18 @@ def architecture():
 
     architecture = detect_architecture()
     print_architecture_report(architecture)
+
+@app.command()
+def knowledge():
+    """
+    Generate structured knowledge about the current project.
+    """
+
+    project = inspect_project()
+
+    knowledge = build_project_knowledge(project)
+
+    print_knowledge_report(knowledge)
 
 @app.command()
 def version():
