@@ -94,6 +94,64 @@ def build_project_knowledge(project_data: dict) -> dict:
 
     knowledge["risk_level"] = risk
 
+    # Engineering Health
+
+    documentation_scores = {
+        "Missing": 20,
+        "Basic": 60,
+        "Excellent": 100,
+    }
+
+    testing_scores = {
+        "None": 20,
+        "Low": 50,
+        "Moderate": 80,
+        "High": 100,
+    }
+
+    structure_scores = {
+        "Needs Improvement": 40,
+        "Healthy": 100,
+    }
+
+    engineering_scores = {
+        "Early": 30,
+        "Emerging": 70,
+        "Advanced": 100,
+    }
+
+    risk_scores = {
+        "High": 20,
+        "Medium": 60,
+        "Low": 100,
+    }
+
+    health_inputs = [
+        documentation_scores[documentation],
+        testing_scores[testing],
+        structure_scores[structure],
+        engineering_scores[engineering],
+        risk_scores[risk],
+    ]
+
+    health_score = round(
+        sum(health_inputs) / len(health_inputs)
+    )
+
+    if health_score >= 90:
+        health_status = "Excellent"
+    elif health_score >= 75:
+        health_status = "Healthy"
+    elif health_score >= 60:
+        health_status = "Fair"
+    elif health_score >= 40:
+        health_status = "Needs Attention"
+    else:
+        health_status = "Critical"
+
+    knowledge["engineering_health_score"] = f"{health_score}/100"
+    knowledge["engineering_health_status"] = health_status
+    
     # Knowledge version
     knowledge["knowledge_version"] = "1.1"
 
