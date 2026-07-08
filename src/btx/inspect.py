@@ -18,6 +18,11 @@ def inspect_project():
     source_files = len(list(root.glob("src/**/*.py")))
     test_files = len(list(root.glob("tests/**/*.py")))
 
+    # Documentation
+    readme_exists = (root / "README.md").exists()
+    changelog_exists = (root / "CHANGELOG.md").exists()
+    docs_exists = (root / "docs").exists()
+
     return {
         "project_name": project_name,
         "python_version": python_version,
@@ -25,4 +30,9 @@ def inspect_project():
         "btx_config": config_exists,
         "source_files": source_files,
         "test_files": test_files,
+
+        # New inspection fields
+        "readme": readme_exists,
+        "changelog": changelog_exists,
+        "docs": docs_exists,
     }
