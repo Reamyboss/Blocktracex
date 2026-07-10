@@ -32,7 +32,13 @@ def print_knowledge_report(knowledge: dict):
         if label == "Knowledge Version":
             label = "Engine Version"
 
-        table.add_row(label, str(value))
+        # Render lists as bullet points
+        if isinstance(value, list):
+            formatted = "\n".join(f"• {item}" for item in value)
+        else:
+            formatted = str(value)
+
+        table.add_row(label, formatted)
 
     console.print(table)
 

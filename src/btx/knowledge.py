@@ -151,6 +151,53 @@ def build_project_knowledge(project_data: dict) -> dict:
 
     knowledge["engineering_health_score"] = f"{health_score}/100"
     knowledge["engineering_health_status"] = health_status
+
+        # Engineering Recommendations
+
+    recommendations = []
+
+    if documentation == "Missing":
+        recommendations.append(
+            "Add a README.md to help developers understand and use the project."
+        )
+    elif documentation == "Basic":
+        recommendations.append(
+            "Improve project documentation with a CHANGELOG and docs directory."
+        )
+
+    if testing == "None":
+        recommendations.append(
+            "Introduce automated tests to improve reliability and engineering confidence."
+        )
+    elif testing == "Low":
+        recommendations.append(
+            "Increase test coverage to improve project quality."
+        )
+
+    if structure == "Needs Improvement":
+        recommendations.append(
+            "Improve project organization by separating source code and documentation."
+        )
+
+    if engineering == "Early":
+        recommendations.append(
+            "Adopt engineering best practices such as Git, configuration management, and testing."
+        )
+    elif engineering == "Emerging":
+        recommendations.append(
+            "Continue strengthening engineering maturity with CI/CD and automation."
+        )
+
+    if risk == "High":
+        recommendations.append(
+            "Reduce engineering risk by enabling Git and introducing automated testing."
+        )
+    elif risk == "Medium":
+        recommendations.append(
+            "Lower project risk by increasing testing maturity."
+        )
+
+    knowledge["recommendations"] = recommendations
     
     # Knowledge version
     knowledge["knowledge_version"] = "1.1"
