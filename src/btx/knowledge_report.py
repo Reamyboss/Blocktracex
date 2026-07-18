@@ -41,6 +41,12 @@ def print_knowledge_report(knowledge: dict):
         elif key == "engineering_verdict":
             formatted = f"[bold cyan]{value}[/bold cyan]"
 
+        elif key == "next_best_action":
+            formatted = f"[bold yellow]★ {value}[/bold yellow]"
+
+        elif key == "estimated_impact":
+            formatted = f"[bold green]{value}[/bold green]"
+
         else:
             formatted = str(value)
 

@@ -152,7 +152,7 @@ def build_project_knowledge(project_data: dict) -> dict:
     knowledge["engineering_health_score"] = f"{health_score}/100"
     knowledge["engineering_health_status"] = health_status
 
-        # Engineering Recommendations
+    # Engineering Recommendations
 
     recommendations = []
 
@@ -199,7 +199,7 @@ def build_project_knowledge(project_data: dict) -> dict:
 
     knowledge["recommendations"] = recommendations
 
-        # Engineering Evidence
+    # Engineering Evidence
 
     evidence = []
 
@@ -262,7 +262,7 @@ def build_project_knowledge(project_data: dict) -> dict:
 
     knowledge["engineering_evidence"] = evidence
 
-        # Engineering Verdict
+    # Engineering Verdict
 
     if health_score >= 90:
         verdict = (
@@ -298,8 +298,71 @@ def build_project_knowledge(project_data: dict) -> dict:
         )
 
     knowledge["engineering_verdict"] = verdict
-    
+
+    # Engineering Intelligence
+
+    priorities = []
+
+    if testing in ("None", "Low"):
+        priorities.append(
+            "Increase automated testing to improve software reliability."
+        )
+
+    if not project_data.get("btx_config"):
+        priorities.append(
+            "Create a Blocktracex configuration file."
+        )
+
+    if documentation == "Basic":
+        priorities.append(
+            "Expand project documentation."
+        )
+
+    if structure == "Needs Improvement":
+        priorities.append(
+            "Improve project structure."
+        )
+
+    if not priorities:
+        priorities.append(
+            "Maintain current engineering practices."
+        )
+
+    knowledge["engineering_priorities"] = priorities
+
+    # Next Best Action
+
+    if priorities:
+        knowledge["next_best_action"] = priorities[0]
+    else:
+        knowledge["next_best_action"] = (
+            "Maintain current engineering practices."
+        )
+
+            # Estimated Impact
+
+    if testing == "None":
+        impact = "Very High"
+
+    elif testing == "Low":
+        impact = "High"
+
+    elif documentation == "Missing":
+        impact = "High"
+
+    elif structure == "Needs Improvement":
+        impact = "Medium"
+
+    elif not project_data.get("btx_config"):
+        impact = "Medium"
+
+    else:
+        impact = "Low"
+
+    knowledge["estimated_impact"] = impact
+
     # Knowledge version
+
     knowledge["knowledge_version"] = "1.3"
 
     return knowledge

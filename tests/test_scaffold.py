@@ -1,4 +1,3 @@
-from pathlib import Path
 from btx.scaffold import create_project
 
 

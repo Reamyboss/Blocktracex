@@ -188,3 +188,16 @@ Official
 Sprint Status: ✅ Complete
 
 Future Status: A future worth building.
+
+## Sprint 18 — Engineering Verdict Engine
+
+### Added
+
+- Engineering Evidence Engine
+- Engineering Verdict
+- Improved knowledge reporting
+- Knowledge Engine upgraded to v1.3
+
+### Outcome
+
+Blocktracex now explains not only what it found during project inspection, but also the evidence supporting its conclusions and an overall engineering verdict.

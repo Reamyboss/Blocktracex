@@ -1,4 +1,3 @@
-from rich import print
 
 from btx.scoring import calculate_score
 from btx.recommend import print_recommendations
