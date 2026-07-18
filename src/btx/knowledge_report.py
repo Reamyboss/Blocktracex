@@ -32,9 +32,15 @@ def print_knowledge_report(knowledge: dict):
         if label == "Knowledge Version":
             label = "Engine Version"
 
-        # Render lists as bullet points
+        # Render values
         if isinstance(value, list):
-            formatted = "\n".join(f"• {item}" for item in value)
+            formatted = "\n".join(
+                f"• {item}" for item in value
+            )
+
+        elif key == "engineering_verdict":
+            formatted = f"[bold cyan]{value}[/bold cyan]"
+
         else:
             formatted = str(value)
 

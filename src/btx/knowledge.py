@@ -198,8 +198,108 @@ def build_project_knowledge(project_data: dict) -> dict:
         )
 
     knowledge["recommendations"] = recommendations
+
+        # Engineering Evidence
+
+    evidence = []
+
+    # Repository
+    if project_data.get("git"):
+        evidence.append("✓ Git repository detected.")
+    else:
+        evidence.append("✗ Git repository not detected.")
+
+    # Configuration
+    if project_data.get("btx_config"):
+        evidence.append("✓ Blocktracex configuration detected.")
+    else:
+        evidence.append("⚠ Blocktracex configuration missing.")
+
+    # Documentation
+    if readme:
+        evidence.append("✓ README.md documentation found.")
+    else:
+        evidence.append("✗ README.md not found.")
+
+    if changelog:
+        evidence.append("✓ CHANGELOG.md found.")
+    else:
+        evidence.append("⚠ CHANGELOG.md not found.")
+
+    if docs:
+        evidence.append("✓ Documentation directory detected.")
+    else:
+        evidence.append("⚠ Documentation directory missing.")
+
+    # Source Code
+    if source_files > 0:
+        evidence.append(
+            f"✓ {source_files} Python source file(s) discovered."
+        )
+    else:
+        evidence.append("✗ No Python source files discovered.")
+
+    # Testing
+    if test_files == 0:
+        evidence.append("✗ No automated tests detected.")
+    elif test_files < 5:
+        evidence.append(
+            f"⚠ {test_files} automated test file(s) detected (Low coverage)."
+        )
+    elif test_files < 20:
+        evidence.append(
+            f"✓ {test_files} automated test file(s) detected (Moderate coverage)."
+        )
+    else:
+        evidence.append(
+            f"✓ {test_files} automated test file(s) detected (High coverage)."
+        )
+
+    # Runtime
+    evidence.append(
+        f"✓ Python {project_data['python_version']} detected."
+    )
+
+    knowledge["engineering_evidence"] = evidence
+
+        # Engineering Verdict
+
+    if health_score >= 90:
+        verdict = (
+            "This project demonstrates excellent engineering practices. "
+            "Documentation, structure, testing, and repository health are all "
+            "well maintained."
+        )
+
+    elif health_score >= 75:
+        verdict = (
+            "This project has strong engineering foundations with only minor "
+            "areas for improvement. Increasing automated testing will further "
+            "improve long-term reliability."
+        )
+
+    elif health_score >= 60:
+        verdict = (
+            "The project shows promising engineering practices but requires "
+            "improvements before reaching a mature engineering standard."
+        )
+
+    elif health_score >= 40:
+        verdict = (
+            "The project requires engineering attention. Documentation, "
+            "testing, or project organization should be strengthened."
+        )
+
+    else:
+        verdict = (
+            "The project is currently in an early engineering state. "
+            "Foundational engineering practices should be established before "
+            "future expansion."
+        )
+
+    knowledge["engineering_verdict"] = verdict
     
     # Knowledge version
-    knowledge["knowledge_version"] = "1.1"
+    knowledge["knowledge_version"] = "1.3"
 
     return knowledge
