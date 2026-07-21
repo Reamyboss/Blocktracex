@@ -7,7 +7,9 @@ def print_recommendations(missing_items: list[str]) -> None:
     """
 
     if not missing_items:
-        print("\n[bold green]🎉 No recommendations. Your project looks great![/bold green]")
+        print(
+            "\n[bold green]🎉 No recommendations. Your project looks great![/bold green]"
+        )
         return
 
     print("\n[bold yellow]💡 Recommendations[/bold yellow]")

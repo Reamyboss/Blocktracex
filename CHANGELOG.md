@@ -201,3 +201,15 @@ Future Status: A future worth building.
 ### Outcome
 
 Blocktracex now explains not only what it found during project inspection, but also the evidence supporting its conclusions and an overall engineering verdict.
+
+## Sprint 20.2
+
+### Added
+
+- Introduced automated testing for the Knowledge Engine.
+- Added validation for engineering intelligence outputs.
+- Protected Engineering Verdict, Evidence, Priorities,
+  Next Best Action, Estimated Impact, and Health Score
+  against future regressions.
+- Blocktracex now includes an automated verification
+  framework for core engineering intelligence.

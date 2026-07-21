@@ -10,16 +10,12 @@ def build_project_knowledge(project_data: dict) -> dict:
 
     # Repository
     knowledge["repository_status"] = (
-        "Git Enabled"
-        if project_data.get("git")
-        else "Not a Git Repository"
+        "Git Enabled" if project_data.get("git") else "Not a Git Repository"
     )
 
     # Configuration
     knowledge["configuration_status"] = (
-        "Configured"
-        if project_data.get("btx_config")
-        else "Configuration Missing"
+        "Configured" if project_data.get("btx_config") else "Configuration Missing"
     )
 
     # Documentation maturity
@@ -134,9 +130,7 @@ def build_project_knowledge(project_data: dict) -> dict:
         risk_scores[risk],
     ]
 
-    health_score = round(
-        sum(health_inputs) / len(health_inputs)
-    )
+    health_score = round(sum(health_inputs) / len(health_inputs))
 
     if health_score >= 90:
         health_status = "Excellent"
@@ -170,9 +164,7 @@ def build_project_knowledge(project_data: dict) -> dict:
             "Introduce automated tests to improve reliability and engineering confidence."
         )
     elif testing == "Low":
-        recommendations.append(
-            "Increase test coverage to improve project quality."
-        )
+        recommendations.append("Increase test coverage to improve project quality.")
 
     if structure == "Needs Improvement":
         recommendations.append(
@@ -193,9 +185,7 @@ def build_project_knowledge(project_data: dict) -> dict:
             "Reduce engineering risk by enabling Git and introducing automated testing."
         )
     elif risk == "Medium":
-        recommendations.append(
-            "Lower project risk by increasing testing maturity."
-        )
+        recommendations.append("Lower project risk by increasing testing maturity.")
 
     knowledge["recommendations"] = recommendations
 
@@ -233,9 +223,7 @@ def build_project_knowledge(project_data: dict) -> dict:
 
     # Source Code
     if source_files > 0:
-        evidence.append(
-            f"✓ {source_files} Python source file(s) discovered."
-        )
+        evidence.append(f"✓ {source_files} Python source file(s) discovered.")
     else:
         evidence.append("✗ No Python source files discovered.")
 
@@ -256,9 +244,7 @@ def build_project_knowledge(project_data: dict) -> dict:
         )
 
     # Runtime
-    evidence.append(
-        f"✓ Python {project_data['python_version']} detected."
-    )
+    evidence.append(f"✓ Python {project_data['python_version']} detected.")
 
     knowledge["engineering_evidence"] = evidence
 
@@ -304,29 +290,19 @@ def build_project_knowledge(project_data: dict) -> dict:
     priorities = []
 
     if testing in ("None", "Low"):
-        priorities.append(
-            "Increase automated testing to improve software reliability."
-        )
+        priorities.append("Increase automated testing to improve software reliability.")
 
     if not project_data.get("btx_config"):
-        priorities.append(
-            "Create a Blocktracex configuration file."
-        )
+        priorities.append("Create a Blocktracex configuration file.")
 
     if documentation == "Basic":
-        priorities.append(
-            "Expand project documentation."
-        )
+        priorities.append("Expand project documentation.")
 
     if structure == "Needs Improvement":
-        priorities.append(
-            "Improve project structure."
-        )
+        priorities.append("Improve project structure.")
 
     if not priorities:
-        priorities.append(
-            "Maintain current engineering practices."
-        )
+        priorities.append("Maintain current engineering practices.")
 
     knowledge["engineering_priorities"] = priorities
 
@@ -335,11 +311,9 @@ def build_project_knowledge(project_data: dict) -> dict:
     if priorities:
         knowledge["next_best_action"] = priorities[0]
     else:
-        knowledge["next_best_action"] = (
-            "Maintain current engineering practices."
-        )
+        knowledge["next_best_action"] = "Maintain current engineering practices."
 
-            # Estimated Impact
+        # Estimated Impact
 
     if testing == "None":
         impact = "Very High"

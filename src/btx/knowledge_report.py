@@ -34,9 +34,7 @@ def print_knowledge_report(knowledge: dict):
 
         # Render values
         if isinstance(value, list):
-            formatted = "\n".join(
-                f"• {item}" for item in value
-            )
+            formatted = "\n".join(f"• {item}" for item in value)
 
         elif key == "engineering_verdict":
             formatted = f"[bold cyan]{value}[/bold cyan]"

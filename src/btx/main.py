@@ -19,6 +19,8 @@ app = typer.Typer(
     no_args_is_help=True,
     rich_markup_mode="rich",
 )
+
+
 @app.command()
 def architecture():
     """
@@ -27,6 +29,7 @@ def architecture():
 
     architecture = detect_architecture()
     print_architecture_report(architecture)
+
 
 @app.command()
 def knowledge():
@@ -39,6 +42,7 @@ def knowledge():
     knowledge = build_project_knowledge(project)
 
     print_knowledge_report(knowledge)
+
 
 @app.command()
 def version():
@@ -68,7 +72,7 @@ def doctor():
 def validate():
     """Validate the current Blocktracex project."""
     validate_project()
-    
+
 
 @app.command()
 def init():
@@ -81,6 +85,7 @@ def info():
     """Display information about the current project."""
     show_project_info()
 
+
 @app.command()
 def inspect():
     """
@@ -89,6 +94,7 @@ def inspect():
 
     project = inspect_project()
     print_inspection_report(project)
-    
+
+
 if __name__ == "__main__":
     app()

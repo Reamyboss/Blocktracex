@@ -30,7 +30,6 @@ def inspect_project():
         "btx_config": config_exists,
         "source_files": source_files,
         "test_files": test_files,
-
         # New inspection fields
         "readme": readme_exists,
         "changelog": changelog_exists,

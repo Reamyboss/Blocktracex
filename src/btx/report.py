@@ -1,9 +1,9 @@
-
 from btx.scoring import calculate_score
 from btx.recommend import print_recommendations
 from rich.console import Console
 
 console = Console()
+
 
 def print_validation_summary(
     passed: int,
@@ -15,8 +15,9 @@ def print_validation_summary(
     and recommendations.
     """
     from btx.dashboard import print_dashboard
+
     score = calculate_score(passed, failed)
-    
+
     print_dashboard(score)
 
     console.rule("[bold cyan]BLOCKTRACEX VALIDATION")

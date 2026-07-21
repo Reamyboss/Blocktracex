@@ -16,12 +16,12 @@ def print_dashboard(score: int):
     console.print("\n[bold cyan]Project Health[/bold cyan]")
     console.print(f"[green]{bar}[/green] {score}%")
     if score >= 90:
-     status = "[bold green]🟢 Excellent[/bold green]"
+        status = "[bold green]🟢 Excellent[/bold green]"
     elif score >= 70:
-     status = "[bold yellow]🟡 Good[/bold yellow]"
+        status = "[bold yellow]🟡 Good[/bold yellow]"
     elif score >= 50:
-     status = "[bold orange3]🟠 Fair[/bold orange3]"
+        status = "[bold orange3]🟠 Fair[/bold orange3]"
     else:
-     status = "[bold red]🔴 Needs Attention[/bold red]"
+        status = "[bold red]🔴 Needs Attention[/bold red]"
 
     console.print(status)
