@@ -13,6 +13,11 @@ from btx.init import init_project
 from btx.info import show_project_info
 from btx.validate import validate_project
 
+from btx.inspect import inspect_project
+from btx.knowledge import build_project_knowledge
+from btx.coach import build_engineering_coach
+from btx.coach_report import print_coach_report
+
 app = typer.Typer(
     name="btx",
     help="Blocktracex Developer CLI\n\nBuild • Transform • eXecute.",
@@ -94,6 +99,21 @@ def inspect():
 
     project = inspect_project()
     print_inspection_report(project)
+
+
+@app.command()
+def coach():
+    """
+    Generate engineering coaching for the current project.
+    """
+
+    project = inspect_project()
+
+    knowledge = build_project_knowledge(project)
+
+    coaching = build_engineering_coach(knowledge)
+
+    print_coach_report(coaching)
 
 
 if __name__ == "__main__":
