@@ -1,22 +1,19 @@
 import typer
 from rich import print
-from btx.inspect import inspect_project
-from btx.inspect_report import print_inspection_report
+
 from btx.architecture import detect_architecture
 from btx.architecture_report import print_architecture_report
-from btx.knowledge import build_project_knowledge
-from btx.knowledge_report import print_knowledge_report
-
-from btx.scaffold import create_project
-from btx.doctor import run_doctor
-from btx.init import init_project
-from btx.info import show_project_info
-from btx.validate import validate_project
-
-from btx.inspect import inspect_project
-from btx.knowledge import build_project_knowledge
 from btx.coach import build_engineering_coach
 from btx.coach_report import print_coach_report
+from btx.doctor import run_doctor
+from btx.info import show_project_info
+from btx.init import init_project
+from btx.inspect import inspect_project
+from btx.inspect_report import print_inspection_report
+from btx.knowledge import build_project_knowledge
+from btx.knowledge_report import print_knowledge_report
+from btx.scaffold import create_project
+from btx.validate import validate_project
 
 app = typer.Typer(
     name="btx",
@@ -24,29 +21,6 @@ app = typer.Typer(
     no_args_is_help=True,
     rich_markup_mode="rich",
 )
-
-
-@app.command()
-def architecture():
-    """
-    Analyze the project's architecture.
-    """
-
-    architecture = detect_architecture()
-    print_architecture_report(architecture)
-
-
-@app.command()
-def knowledge():
-    """
-    Generate structured knowledge about the current project.
-    """
-
-    project = inspect_project()
-
-    knowledge = build_project_knowledge(project)
-
-    print_knowledge_report(knowledge)
 
 
 @app.command()
@@ -68,6 +42,12 @@ def new(name: str):
 
 
 @app.command()
+def init():
+    """Initialize the current directory."""
+    init_project()
+
+
+@app.command()
 def doctor():
     """Check the development environment."""
     run_doctor()
@@ -77,12 +57,6 @@ def doctor():
 def validate():
     """Validate the current Blocktracex project."""
     validate_project()
-
-
-@app.command()
-def init():
-    """Initialize the current directory."""
-    init_project()
 
 
 @app.command()
@@ -96,9 +70,29 @@ def inspect():
     """
     Inspect the current Blocktracex project.
     """
-
     project = inspect_project()
     print_inspection_report(project)
+
+
+@app.command()
+def architecture():
+    """
+    Analyze the project's architecture.
+    """
+    architecture = detect_architecture()
+    print_architecture_report(architecture)
+
+
+@app.command()
+def knowledge():
+    """
+    Generate structured knowledge about the current project.
+    """
+    project = inspect_project()
+
+    knowledge = build_project_knowledge(project)
+
+    print_knowledge_report(knowledge)
 
 
 @app.command()
@@ -106,7 +100,6 @@ def coach():
     """
     Generate engineering coaching for the current project.
     """
-
     project = inspect_project()
 
     knowledge = build_project_knowledge(project)
