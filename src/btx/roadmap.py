@@ -1,4 +1,4 @@
-def build_engineering_roadmap(knowledge: dict) -> dict:
+def build_roadmap(knowledge: dict) -> dict:
     """
     Generate an engineering roadmap based on project knowledge.
     """
@@ -43,5 +43,10 @@ def build_engineering_roadmap(knowledge: dict) -> dict:
         milestones.append("Achieve a 90+ Engineering Health Score.")
 
     roadmap["milestones"] = milestones
+
+    if milestones:
+        roadmap["next_milestone"] = milestones[0]
+    else:
+        roadmap["next_milestone"] = "Continue current engineering practices."
 
     return roadmap

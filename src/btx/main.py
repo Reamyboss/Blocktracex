@@ -14,6 +14,10 @@ from btx.knowledge import build_project_knowledge
 from btx.knowledge_report import print_knowledge_report
 from btx.scaffold import create_project
 from btx.validate import validate_project
+from btx.roadmap import build_roadmap
+from btx.dashboard_report import print_dashboard_report
+from btx.history import save_engineering_snapshot
+from btx.history_report import print_history
 
 app = typer.Typer(
     name="btx",
@@ -107,6 +111,39 @@ def coach():
     coaching = build_engineering_coach(knowledge)
 
     print_coach_report(coaching)
+
+
+@app.command()
+def dashboard():
+    """
+    Display the complete engineering dashboard.
+    """
+
+    project = inspect_project()
+
+    knowledge = build_project_knowledge(project)
+
+    save_engineering_snapshot(knowledge)
+
+    coaching = build_engineering_coach(knowledge)
+
+    roadmap = build_roadmap(knowledge)
+
+    print_dashboard_report(
+        project,
+        knowledge,
+        coaching,
+        roadmap,
+    )
+
+
+@app.command()
+def history():
+    """
+    Display engineering history.
+    """
+
+    print_history()
 
 
 if __name__ == "__main__":
