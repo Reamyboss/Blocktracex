@@ -1,12 +1,15 @@
 from pathlib import Path
 
 
-def detect_architecture():
+def detect_architecture(root: Path | None = None):
     """
-    Detect the project's architecture characteristics.
+    Detect the target project's architecture characteristics.
+
+    If no root is supplied, the current working directory is used.
     """
 
-    root = Path.cwd()
+    if root is None:
+        root = Path.cwd()
 
     language = "Python" if (root / "pyproject.toml").exists() else "Unknown"
 

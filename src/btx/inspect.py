@@ -2,12 +2,15 @@ from pathlib import Path
 import platform
 
 
-def inspect_project():
+def inspect_project(root: Path | None = None):
     """
-    Collect information about the current project.
+    Collect information about the target project.
+
+    If no root is supplied, the current working directory is used.
     """
 
-    root = Path.cwd()
+    if root is None:
+        root = Path.cwd()
 
     project_name = root.name
     python_version = platform.python_version()

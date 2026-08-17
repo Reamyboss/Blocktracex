@@ -5,12 +5,16 @@ from rich import print
 from btx.report import print_validation_summary
 
 
-def validate_project():
+def validate_project(root: Path | None = None):
     """
-    Validate the current Blocktracex project structure.
+    Validate the target project's structure.
+
+    If no root is supplied, the current working directory is used.
     """
 
-    root = Path.cwd()
+    if root is None:
+        root = Path.cwd()
+
     config = root / "btx.toml"
 
     project_is_valid = True

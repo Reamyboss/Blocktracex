@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import typer
 from rich import print
 
@@ -24,6 +26,20 @@ app = typer.Typer(
     help="Blocktracex Developer CLI\n\nBuild • Transform • eXecute.",
     no_args_is_help=True,
     rich_markup_mode="rich",
+)
+
+# Single, shared definition of the "which project am I analyzing" input.
+# Every analysis command binds this the same way, so the resolved path is
+# always sourced consistently before being passed down to the engines.
+PROJECT_PATH_OPTION = typer.Option(
+    Path("."),
+    "--path",
+    "-p",
+    exists=True,
+    file_okay=False,
+    dir_okay=True,
+    resolve_path=True,
+    help="Path to the project to analyze (defaults to the current directory).",
 )
 
 
@@ -58,9 +74,9 @@ def doctor():
 
 
 @app.command()
-def validate():
-    """Validate the current Blocktracex project."""
-    validate_project()
+def validate(path: Path = PROJECT_PATH_OPTION):
+    """Validate the target Blocktracex project."""
+    validate_project(path)
 
 
 @app.command()
@@ -70,29 +86,29 @@ def info():
 
 
 @app.command()
-def inspect():
+def inspect(path: Path = PROJECT_PATH_OPTION):
     """
-    Inspect the current Blocktracex project.
+    Inspect the target Blocktracex project.
     """
-    project = inspect_project()
+    project = inspect_project(path)
     print_inspection_report(project)
 
 
 @app.command()
-def architecture():
+def architecture(path: Path = PROJECT_PATH_OPTION):
     """
-    Analyze the project's architecture.
+    Analyze the target project's architecture.
     """
-    architecture = detect_architecture()
+    architecture = detect_architecture(path)
     print_architecture_report(architecture)
 
 
 @app.command()
-def knowledge():
+def knowledge(path: Path = PROJECT_PATH_OPTION):
     """
-    Generate structured knowledge about the current project.
+    Generate structured knowledge about the target project.
     """
-    project = inspect_project()
+    project = inspect_project(path)
 
     knowledge = build_project_knowledge(project)
 
@@ -100,11 +116,11 @@ def knowledge():
 
 
 @app.command()
-def coach():
+def coach(path: Path = PROJECT_PATH_OPTION):
     """
-    Generate engineering coaching for the current project.
+    Generate engineering coaching for the target project.
     """
-    project = inspect_project()
+    project = inspect_project(path)
 
     knowledge = build_project_knowledge(project)
 
@@ -114,12 +130,12 @@ def coach():
 
 
 @app.command()
-def dashboard():
+def dashboard(path: Path = PROJECT_PATH_OPTION):
     """
     Display the complete engineering dashboard.
     """
 
-    project = inspect_project()
+    project = inspect_project(path)
 
     knowledge = build_project_knowledge(project)
 
