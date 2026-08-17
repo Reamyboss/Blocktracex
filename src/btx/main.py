@@ -1,4 +1,5 @@
 from pathlib import Path
+import sys
 
 import typer
 from rich import print
@@ -20,6 +21,35 @@ from btx.roadmap import build_roadmap
 from btx.dashboard_report import print_dashboard_report
 from btx.history import save_engineering_snapshot
 from btx.history_report import print_history
+
+
+def _ensure_utf8_console_output() -> None:
+    """
+    Every report module builds its own rich Console() with no explicit
+    file=, so each one resolves sys.stdout/sys.stderr lazily at print time.
+    Reconfiguring those two streams once, here, before any command runs,
+    is therefore enough to fix all of them without touching a single
+    report module.
+
+    Windows-only: when stdout/stderr aren't attached to a native console
+    (piped output, redirected output, or a non-native terminal such as
+    Git Bash/MSYS2), Python falls back to the legacy ANSI codepage
+    (commonly cp1252), which cannot encode the emoji used throughout the
+    reports and raises UnicodeEncodeError. UTF-8 can encode every
+    character Blocktracex prints, so this removes the failure mode
+    instead of hiding it. macOS/Linux terminals are already UTF-8 and are
+    left untouched.
+    """
+
+    if sys.platform != "win32":
+        return
+
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(encoding="utf-8", errors="replace")
+
+
+_ensure_utf8_console_output()
 
 app = typer.Typer(
     name="btx",
