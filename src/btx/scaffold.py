@@ -65,7 +65,7 @@ def create_project(name: str):
     encoding="utf-8",
 )
 
-    # Initialize Git#
+    # Initialize Git
     try:
         subprocess.run(
             ["git", "init"],
@@ -74,7 +74,7 @@ def create_project(name: str):
             capture_output=True,
         )
         print("[green]✔[/green] Git initialized")
-    except Exception:
+    except subprocess.CalledProcessError:
         print("[yellow]⚠ Git initialization skipped[/yellow]")
 
     print("\n[bold green]🎉 Project created successfully![/bold green]")
