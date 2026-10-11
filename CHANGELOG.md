@@ -213,3 +213,26 @@ Blocktracex now explains not only what it found during project inspection, but a
   against future regressions.
 - Blocktracex now includes an automated verification
   framework for core engineering intelligence.
+
+## v0.4.0 — Alpha consolidation
+
+First release from `main` that includes the Sprint 11–22 work.
+
+### Added
+
+- Commands: `init`, `validate`, `info`, `inspect`, `architecture`,
+  `knowledge`, `coach`, `dashboard`, `history` (merged from `feature/btx-init`).
+
+### Fixed
+
+- CI green again: ruff errors, the wrapped inspect table title, and a test
+  that broke under GitHub Actions' colored output.
+- `btx new` wrote each template file once per folder; it now writes each once.
+- A missing `git` binary no longer crashes `btx new`.
+
+### Changed
+
+- Dependencies live only in `pyproject.toml`; dev tools install with
+  `pip install -e ".[dev]"`. `requirements.txt` was removed.
+- `btx version` reads the installed package version.
+- CI workflow renamed to `ci.yml`, on Node 24 action versions.
