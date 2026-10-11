@@ -1,8 +1,12 @@
+import re
+
 from typer.testing import CliRunner
 
 from btx.main import app
 
 runner = CliRunner()
+
+ANSI_ESCAPE = re.compile(r"\x1b\[[0-9;]*m")
 
 
 def test_inspect_default_behavior_still_works():
@@ -59,7 +63,8 @@ def test_inspect_rejects_nonexistent_path_cleanly(tmp_path):
 
     result = runner.invoke(app, ["inspect", "--path", str(missing)])
 
-    output = result.output.lower()
+    # Rich colors the error panel when it detects CI (e.g. GITHUB_ACTIONS).
+    output = ANSI_ESCAPE.sub("", result.output).lower()
 
     assert result.exit_code != 0
     assert "invalid value for '--path'" in output
