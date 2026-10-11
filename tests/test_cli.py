@@ -1,4 +1,5 @@
 import re
+from importlib.metadata import version as package_version
 
 from typer.testing import CliRunner
 
@@ -70,3 +71,10 @@ def test_inspect_rejects_nonexistent_path_cleanly(tmp_path):
     assert "invalid value for '--path'" in output
     assert "does not" in output and "exist" in output
     assert "Traceback (most recent call last)" not in result.output
+
+
+def test_version_reports_installed_package_version():
+    result = runner.invoke(app, ["version"])
+
+    assert result.exit_code == 0
+    assert f"v{package_version('blocktracex-cli')}" in result.output

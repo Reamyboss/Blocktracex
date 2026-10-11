@@ -108,6 +108,10 @@ Engineering Standard
 🚧 AI-native Engineering Assistant
 
 🚧 Organization-wide Engineering Intelligence
+
+## How It Works
+
+```text
 Filesystem
 │
 ▼
@@ -128,3 +132,23 @@ Report Engine
 │
 ▼
 Developer
+```
+
+## Development
+
+Requires Python 3.11+.
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
+
+btx --help
+btx inspect --path .
+```
+
+Before pushing, run the same checks as CI:
+
+```bash
+ruff check . && black --check . && pytest
+```
