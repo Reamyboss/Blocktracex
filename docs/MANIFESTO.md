@@ -52,3 +52,5 @@ Every project expands our capability.
 Every day we become better engineers.
 
 **This is the Blocktracex way.**
+
+"We believe software projects should be understandable, measurable, explainable, and continuously improvable. Blocktracex exists to make engineering intelligence accessible to every developer and every team."

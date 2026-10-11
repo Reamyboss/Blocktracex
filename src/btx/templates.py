@@ -49,3 +49,14 @@ LICENSE_TEMPLATE = """MIT License
 
 Copyright (c) 2026 Blocktracex
 """
+BTX_CONFIG_TEMPLATE = """
+[project]
+name = "{name}"
+version = "0.1.0"
+
+[python]
+version = "3.13"
+
+[git]
+enabled = true
+"""
