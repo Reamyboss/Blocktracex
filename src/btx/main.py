@@ -1,4 +1,5 @@
 import sys
+from importlib.metadata import version as package_version
 from pathlib import Path
 
 import typer
@@ -76,7 +77,9 @@ PROJECT_PATH_OPTION = typer.Option(
 @app.command()
 def version():
     """Show the current CLI version."""
-    print("[bold green]🚀 Blocktracex CLI v0.1.0[/bold green]")
+    print(
+        f"[bold green]🚀 Blocktracex CLI v{package_version('blocktracex-cli')}[/bold green]"
+    )
 
 
 @app.command()
