@@ -1,14 +1,17 @@
-from pathlib import Path
 import subprocess
+from pathlib import Path
+
 from rich import print
 
+from btx.config import create_config
 from btx.templates import (
-    README_TEMPLATE,
-    GITIGNORE_TEMPLATE,
     CHANGELOG_TEMPLATE,
     CONTRIBUTING_TEMPLATE,
+    GITIGNORE_TEMPLATE,
     LICENSE_TEMPLATE,
+    README_TEMPLATE,
 )
+
 PROJECT_FOLDERS = [
     "docs",
     "src",
@@ -20,6 +23,12 @@ PROJECT_FOLDERS = [
 ]
 
 
+def scaffold_directory(root: Path, project_name: str):
+    """Scaffold a Blocktracex project inside an existing directory."""
+
+    print("[bold cyan]🚀 Creating Blocktracex project...[/bold cyan]\n")
+
+
 def create_project(name: str):
     root = Path(name)
 
@@ -27,7 +36,9 @@ def create_project(name: str):
         print(f"[red]❌ Project '{name}' already exists.[/red]")
         return
 
-    print("[bold cyan]🚀 Creating Blocktracex project...[/bold cyan]\n")
+    root.mkdir(parents=True)
+
+    scaffold_directory(root, name)
 
     # Create folders
     for folder in PROJECT_FOLDERS:
@@ -35,35 +46,36 @@ def create_project(name: str):
         print(f"[green]✔[/green] {folder}")
 
     # Create files
-        (root / "README.md").write_text(
-    README_TEMPLATE.format(name=name),
-    encoding="utf-8",
-)
+    (root / "README.md").write_text(
+        README_TEMPLATE.format(name=name),
+        encoding="utf-8",
+    )
 
-        (root / ".gitignore").write_text(
-    GITIGNORE_TEMPLATE,
-    encoding="utf-8",
-)
+    (root / ".gitignore").write_text(
+        GITIGNORE_TEMPLATE,
+        encoding="utf-8",
+    )
 
-        (root / "CHANGELOG.md").write_text(
-    CHANGELOG_TEMPLATE,
-    encoding="utf-8",
-)
+    (root / "CHANGELOG.md").write_text(
+        CHANGELOG_TEMPLATE,
+        encoding="utf-8",
+    )
 
-        (root / "CONTRIBUTING.md").write_text(
-    CONTRIBUTING_TEMPLATE,
-    encoding="utf-8",
-)
+    (root / "CONTRIBUTING.md").write_text(
+        CONTRIBUTING_TEMPLATE,
+        encoding="utf-8",
+    )
 
-        (root / "LICENSE").write_text(
-    LICENSE_TEMPLATE,
-    encoding="utf-8",
-)
+    (root / "LICENSE").write_text(
+        LICENSE_TEMPLATE,
+        encoding="utf-8",
+    )
 
-        (root / "requirements.txt").write_text(
-    "",
-    encoding="utf-8",
-)
+    (root / "requirements.txt").write_text(
+        "",
+        encoding="utf-8",
+    )
+    create_config(root, name)
 
     # Initialize Git
     try:
@@ -74,7 +86,7 @@ def create_project(name: str):
             capture_output=True,
         )
         print("[green]✔[/green] Git initialized")
-    except subprocess.CalledProcessError:
+    except (subprocess.CalledProcessError, FileNotFoundError):
         print("[yellow]⚠ Git initialization skipped[/yellow]")
 
     print("\n[bold green]🎉 Project created successfully![/bold green]")
