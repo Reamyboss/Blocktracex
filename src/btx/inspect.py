@@ -1,6 +1,8 @@
 import platform
 from pathlib import Path
 
+from btx.project_files import is_test_file, iter_python_files
+
 
 def inspect_project(root: Path | None = None):
     """
@@ -18,8 +20,14 @@ def inspect_project(root: Path | None = None):
     git_exists = (root / ".git").exists()
     config_exists = (root / "btx.toml").exists()
 
-    source_files = len(list(root.glob("src/**/*.py")))
-    test_files = len(list(root.glob("tests/**/*.py")))
+    source_files = 0
+    test_files = 0
+
+    for path in iter_python_files(root):
+        if is_test_file(path, root):
+            test_files += 1
+        else:
+            source_files += 1
 
     # Documentation
     readme_exists = (root / "README.md").exists()

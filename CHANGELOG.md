@@ -236,3 +236,15 @@ First release from `main` that includes the Sprint 11–22 work.
   `pip install -e ".[dev]"`. `requirements.txt` was removed.
 - `btx version` reads the installed package version.
 - CI workflow renamed to `ci.yml`, on Node 24 action versions.
+
+## Unreleased
+
+### Fixed
+
+- `btx architecture` detects the framework from declared dependencies
+  (`pyproject.toml`, Poetry, `requirements*.txt`, `setup.cfg`) instead of
+  always reporting Typer, and recognizes `setup.py`/`setup.cfg`/requirements
+  or plain `.py` files as Python projects. (#4)
+- `btx inspect` counts source files in any layout, not only `src/`, skips
+  virtualenvs, build output and caches, and recognizes `test_*.py` /
+  `*_test.py` files outside `tests/`. (#5)
