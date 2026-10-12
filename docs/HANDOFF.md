@@ -24,7 +24,7 @@ AI agents can all use.
 | Command | What it does |
 |---|---|
 | `btx new <name>` | Create a new project with the standard Blocktracex layout, `btx.toml` and git |
-| `btx init` | Apply the Blocktracex layout to the current directory |
+| `btx init` | Add a `btx.toml` to an existing project (never overwrites) |
 | `btx doctor` | Check that Python, git, pip and an editor are installed |
 | `btx inspect` | Count source and test files (any layout), detect git, README, docs and `btx.toml` |
 | `btx architecture` | Detect the language, the framework (Django, FastAPI, Flask, Typer, …), testing and layout |
@@ -49,9 +49,8 @@ below N, for gating CI.
   (is there a `tests/` folder, a README, a `btx.toml`?) and on file counts.
   It doesn't read the code yet. Real code analysis is Phase 2 (#9).
 - **Python only.**
-- **Some coaching text is Blocktracex-specific.** For example, `btx coach` on
-  any project with few tests suggests "Create unit tests for the Knowledge
-  Engine". #7 (field testing) is meant to find and fix issues like this.
+- **Coaching text is generic and rule-based.** Field testing on real
+  projects (#7) is meant to find advice that doesn't fit.
 - **History is global.** Every project's snapshots go into
   `~/.btx_history.json` and are recorded as `"project": "Unknown"`. Tracked
   in #16.
@@ -187,12 +186,10 @@ In priority order:
 
 1. **Push the `v0.4.0` tag** (command above).
 2. **Finish Alpha 0.1 (#3).**
-   - #6: a user quick start in the README, with sample output.
    - #7: run `btx` on 3–5 real open-source projects and fix wrong or
      Blocktracex-specific results (e.g. the coaching text above).
    - #8: housekeeping. Move `src/btx/docs/` to `docs/`, pin dependency floors,
-     and delete the merged branches `feature/btx-init` and
-     `claude/repo-cleanup`.
+     and delete the merged branches (everything except `main`).
 3. **Release Alpha 0.1:** bump the version, tag it, and consider publishing to PyPI.
 4. **Phase 2 (#9):** start with #10 (import graph) and #12 (metrics), then
    rebuild the score on them (#13).

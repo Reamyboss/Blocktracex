@@ -23,12 +23,6 @@ PROJECT_FOLDERS = [
 ]
 
 
-def scaffold_directory(root: Path, project_name: str):
-    """Scaffold a Blocktracex project inside an existing directory."""
-
-    print("[bold cyan]🚀 Creating Blocktracex project...[/bold cyan]\n")
-
-
 def create_project(name: str):
     root = Path(name)
 
@@ -38,7 +32,7 @@ def create_project(name: str):
 
     root.mkdir(parents=True)
 
-    scaffold_directory(root, name)
+    print("[bold cyan]🚀 Creating Blocktracex project...[/bold cyan]\n")
 
     # Create folders
     for folder in PROJECT_FOLDERS:

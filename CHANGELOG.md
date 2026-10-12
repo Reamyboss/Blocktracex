@@ -249,9 +249,16 @@ First release from `main` that includes the Sprint 11–22 work.
   below N, so CI can gate on it. (#20)
 - `engineering_health_value` (integer 0-100) in the knowledge output,
   alongside the existing `"90/100"` string.
+- README quick start: install, analyze, sample output, how the health score
+  is calculated, limits and a command reference. (#6)
 
 ### Fixed
 
+- `btx init` printed a message and created nothing. It now adds a
+  `btx.toml` to an existing project and never overwrites one. (#6)
+- `btx knowledge` showed a redundant "Engineering Health Value" row.
+- `btx coach` suggested "Create unit tests for the Knowledge Engine" for
+  every project; the advice is now generic.
 - `btx architecture` detects the framework from declared dependencies
   (`pyproject.toml`, Poetry, `requirements*.txt`, `setup.cfg`) instead of
   always reporting Typer, and recognizes `setup.py`/`setup.cfg`/requirements

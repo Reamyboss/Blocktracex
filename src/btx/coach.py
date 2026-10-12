@@ -47,7 +47,7 @@ def build_engineering_coach(knowledge: dict) -> dict:
 
     first_step = {
         "Increase automated testing to improve software reliability.": (
-            "Create unit tests for the Knowledge Engine."
+            "Add unit tests for your most important module first."
         ),
         "Create a Blocktracex configuration file.": (
             "Generate a default btx.toml configuration file."
