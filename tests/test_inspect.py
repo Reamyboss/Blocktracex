@@ -110,3 +110,62 @@ def test_nonexistent_path_does_not_raise(tmp_path):
     assert project["source_files"] == 0
     assert project["test_files"] == 0
     assert project["git"] is False
+
+
+def _write(path: Path, content: str = "x = 1\n"):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content)
+
+
+def test_flat_layout_source_files_are_counted(tmp_path):
+    project = tmp_path / "flat_project"
+    _write(project / "mypackage" / "__init__.py")
+    _write(project / "mypackage" / "core.py")
+    _write(project / "mypackage" / "cli.py")
+    _write(project / "tests" / "test_core.py")
+
+    result = inspect_project(project)
+
+    assert result["source_files"] == 3
+    assert result["test_files"] == 1
+
+
+def test_virtualenvs_build_output_and_caches_are_ignored(tmp_path):
+    project = tmp_path / "project_with_venv"
+    _write(project / "app.py")
+    _write(project / ".venv" / "lib" / "site-packages" / "dep.py")
+    _write(project / "venv" / "lib" / "other.py")
+    _write(project / "build" / "lib" / "app.py")
+    _write(project / "app.egg-info" / "stub.py")
+    _write(project / "__pycache__" / "app.py")
+    _write(project / ".git" / "hooks" / "hook.py")
+
+    result = inspect_project(project)
+
+    assert result["source_files"] == 1
+    assert result["test_files"] == 0
+
+
+def test_test_files_follow_pytest_naming_outside_tests_dir(tmp_path):
+    project = tmp_path / "colocated_tests"
+    _write(project / "pkg" / "core.py")
+    _write(project / "pkg" / "test_core.py")
+    _write(project / "pkg" / "cli_test.py")
+    _write(project / "pkg" / "testing_utils.py")
+
+    result = inspect_project(project)
+
+    assert result["source_files"] == 2
+    assert result["test_files"] == 2
+
+
+def test_nested_tests_directory_counts_as_tests(tmp_path):
+    project = tmp_path / "nested_tests"
+    _write(project / "src" / "pkg" / "core.py")
+    _write(project / "src" / "pkg" / "tests" / "conftest.py")
+    _write(project / "src" / "pkg" / "tests" / "test_core.py")
+
+    result = inspect_project(project)
+
+    assert result["source_files"] == 1
+    assert result["test_files"] == 2
