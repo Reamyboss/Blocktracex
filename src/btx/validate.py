@@ -3,11 +3,21 @@ from pathlib import Path
 from rich import print
 
 from btx.report import print_validation_summary
+from btx.scoring import calculate_score
+
+REQUIRED_DIRS = [
+    "docs",
+    "src",
+    "tests",
+    "scripts",
+    "notebooks",
+    "data",
+]
 
 
-def validate_project(root: Path | None = None):
+def check_project(root: Path | None = None) -> dict:
     """
-    Validate the target project's structure.
+    Check the target project's structure without printing anything.
 
     If no root is supplied, the current working directory is used.
     """
@@ -15,65 +25,56 @@ def validate_project(root: Path | None = None):
     if root is None:
         root = Path.cwd()
 
-    config = root / "btx.toml"
-
-    project_is_valid = True
-
-    passed = 0
-    failed = 0
-    missing_items = []
-
-    # --------------------------------------------------
-    # Validate configuration file
-    # --------------------------------------------------
-
-    if config.exists():
-        print("[green]✔ btx.toml found[/green]")
-        passed += 1
-    else:
-        print("[red]❌ No btx.toml found[/red]")
-        failed += 1
-        missing_items.append("btx.toml")
-        project_is_valid = False
-
-    # --------------------------------------------------
-    # Required project directories
-    # --------------------------------------------------
-
-    required_dirs = [
-        "docs",
-        "src",
-        "tests",
-        "scripts",
-        "notebooks",
-        "data",
+    checks = [
+        {"name": "btx.toml", "kind": "file", "passed": (root / "btx.toml").exists()}
     ]
 
-    # --------------------------------------------------
-    # Validate directories
-    # --------------------------------------------------
+    for directory in REQUIRED_DIRS:
+        checks.append(
+            {
+                "name": directory,
+                "kind": "directory",
+                "passed": (root / directory).exists(),
+            }
+        )
 
-    for directory in required_dirs:
+    passed = sum(check["passed"] for check in checks)
+    failed = len(checks) - passed
 
-        path = root / directory
+    return {
+        "valid": failed == 0,
+        "passed": passed,
+        "failed": failed,
+        "score": calculate_score(passed, failed),
+        "checks": checks,
+        "missing": [check["name"] for check in checks if not check["passed"]],
+    }
 
-        if path.exists():
-            print(f"[green]✔ {directory}[/green]")
-            passed += 1
+
+def validate_project(root: Path | None = None):
+    """
+    Validate the target project's structure and print the results.
+
+    If no root is supplied, the current working directory is used.
+    """
+
+    result = check_project(root)
+
+    for check in result["checks"]:
+        name = check["name"]
+
+        if check["passed"]:
+            found = " found" if check["kind"] == "file" else ""
+            print(f"[green]✔ {name}{found}[/green]")
+        elif check["kind"] == "file":
+            print(f"[red]❌ No {name} found[/red]")
         else:
-            print(f"[red]❌ {directory}[/red]")
-            failed += 1
-            missing_items.append(directory)
-            project_is_valid = False
-
-    # --------------------------------------------------
-    # Print summary
-    # --------------------------------------------------
+            print(f"[red]❌ {name}[/red]")
 
     print_validation_summary(
-        passed=passed,
-        failed=failed,
-        missing_items=missing_items,
+        passed=result["passed"],
+        failed=result["failed"],
+        missing_items=result["missing"],
     )
 
-    return project_is_valid
+    return result["valid"]

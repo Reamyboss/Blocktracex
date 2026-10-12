@@ -11,17 +11,18 @@ from btx.coach import build_engineering_coach
 from btx.coach_report import print_coach_report
 from btx.dashboard_report import print_dashboard_report
 from btx.doctor import run_doctor
-from btx.history import save_engineering_snapshot
+from btx.history import load_history, save_engineering_snapshot
 from btx.history_report import print_history
 from btx.info import show_project_info
 from btx.init import init_project
 from btx.inspect import inspect_project
 from btx.inspect_report import print_inspection_report
+from btx.json_output import JSON_OPTION, emit_json
 from btx.knowledge import build_project_knowledge
 from btx.knowledge_report import print_knowledge_report
 from btx.roadmap import build_roadmap
 from btx.scaffold import create_project
-from btx.validate import validate_project
+from btx.validate import check_project, validate_project
 
 
 def _ensure_utf8_console_output() -> None:
@@ -107,8 +108,12 @@ def doctor():
 
 
 @app.command()
-def validate(path: Path = PROJECT_PATH_OPTION):
+def validate(path: Path = PROJECT_PATH_OPTION, as_json: bool = JSON_OPTION):
     """Validate the target Blocktracex project."""
+    if as_json:
+        emit_json("validate", check_project(path))
+        return
+
     validate_project(path)
 
 
@@ -119,25 +124,35 @@ def info():
 
 
 @app.command()
-def inspect(path: Path = PROJECT_PATH_OPTION):
+def inspect(path: Path = PROJECT_PATH_OPTION, as_json: bool = JSON_OPTION):
     """
     Inspect the target Blocktracex project.
     """
     project = inspect_project(path)
+
+    if as_json:
+        emit_json("inspect", project)
+        return
+
     print_inspection_report(project)
 
 
 @app.command()
-def architecture(path: Path = PROJECT_PATH_OPTION):
+def architecture(path: Path = PROJECT_PATH_OPTION, as_json: bool = JSON_OPTION):
     """
     Analyze the target project's architecture.
     """
     architecture = detect_architecture(path)
+
+    if as_json:
+        emit_json("architecture", architecture)
+        return
+
     print_architecture_report(architecture)
 
 
 @app.command()
-def knowledge(path: Path = PROJECT_PATH_OPTION):
+def knowledge(path: Path = PROJECT_PATH_OPTION, as_json: bool = JSON_OPTION):
     """
     Generate structured knowledge about the target project.
     """
@@ -145,11 +160,15 @@ def knowledge(path: Path = PROJECT_PATH_OPTION):
 
     knowledge = build_project_knowledge(project)
 
+    if as_json:
+        emit_json("knowledge", knowledge)
+        return
+
     print_knowledge_report(knowledge)
 
 
 @app.command()
-def coach(path: Path = PROJECT_PATH_OPTION):
+def coach(path: Path = PROJECT_PATH_OPTION, as_json: bool = JSON_OPTION):
     """
     Generate engineering coaching for the target project.
     """
@@ -159,11 +178,25 @@ def coach(path: Path = PROJECT_PATH_OPTION):
 
     coaching = build_engineering_coach(knowledge)
 
+    if as_json:
+        emit_json("coach", coaching)
+        return
+
     print_coach_report(coaching)
 
 
 @app.command()
-def dashboard(path: Path = PROJECT_PATH_OPTION):
+def dashboard(
+    path: Path = PROJECT_PATH_OPTION,
+    as_json: bool = JSON_OPTION,
+    fail_under: int | None = typer.Option(
+        None,
+        "--fail-under",
+        min=0,
+        max=100,
+        help="Exit with status 1 if the health score is below this value (0-100).",
+    ),
+):
     """
     Display the complete engineering dashboard.
     """
@@ -178,19 +211,43 @@ def dashboard(path: Path = PROJECT_PATH_OPTION):
 
     roadmap = build_roadmap(knowledge)
 
-    print_dashboard_report(
-        project,
-        knowledge,
-        coaching,
-        roadmap,
-    )
+    if as_json:
+        emit_json(
+            "dashboard",
+            {
+                "project": project,
+                "knowledge": knowledge,
+                "coaching": coaching,
+                "roadmap": roadmap,
+            },
+        )
+    else:
+        print_dashboard_report(
+            project,
+            knowledge,
+            coaching,
+            roadmap,
+        )
+
+    score = knowledge["engineering_health_value"]
+
+    if fail_under is not None and score < fail_under:
+        typer.echo(
+            f"Engineering health score {score} is below --fail-under {fail_under}.",
+            err=True,
+        )
+        raise typer.Exit(code=1)
 
 
 @app.command()
-def history():
+def history(as_json: bool = JSON_OPTION):
     """
     Display engineering history.
     """
+
+    if as_json:
+        emit_json("history", {"snapshots": load_history()})
+        return
 
     print_history()
 

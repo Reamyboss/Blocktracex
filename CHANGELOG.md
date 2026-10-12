@@ -239,6 +239,17 @@ First release from `main` that includes the Sprint 11–22 work.
 
 ## Unreleased
 
+### Added
+
+- `--json` on `inspect`, `validate`, `architecture`, `knowledge`, `coach`,
+  `dashboard` and `history`: prints only a JSON payload
+  (`schema_version`, `btx_version`, `command`, `data`) for scripts, CI and
+  AI agents. (#20)
+- `btx dashboard --fail-under N` exits with status 1 when the health score is
+  below N, so CI can gate on it. (#20)
+- `engineering_health_value` (integer 0-100) in the knowledge output,
+  alongside the existing `"90/100"` string.
+
 ### Fixed
 
 - `btx architecture` detects the framework from declared dependencies

@@ -27,11 +27,19 @@ def save_engineering_snapshot(knowledge: dict):
         ),
     }
 
-    history = []
-
-    if HISTORY_FILE.exists():
-        history = json.loads(HISTORY_FILE.read_text())
+    history = load_history()
 
     history.append(snapshot)
 
     HISTORY_FILE.write_text(json.dumps(history, indent=4))
+
+
+def load_history() -> list[dict]:
+    """
+    Return every saved engineering snapshot, oldest first.
+    """
+
+    if not HISTORY_FILE.exists():
+        return []
+
+    return json.loads(HISTORY_FILE.read_text())

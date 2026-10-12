@@ -1,12 +1,9 @@
-import json
-from pathlib import Path
-
 from rich.console import Console
 from rich.table import Table
 
-console = Console()
+from btx.history import load_history
 
-HISTORY_FILE = Path.home() / ".btx_history.json"
+console = Console()
 
 
 def print_history():
@@ -14,11 +11,11 @@ def print_history():
     Display engineering history.
     """
 
-    if not HISTORY_FILE.exists():
+    history = load_history()
+
+    if not history:
         console.print("[yellow]No engineering history found.[/yellow]")
         return
-
-    history = json.loads(HISTORY_FILE.read_text())
 
     table = Table(
         title="📈 Engineering Timeline",

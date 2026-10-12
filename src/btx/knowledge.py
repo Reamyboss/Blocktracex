@@ -144,6 +144,7 @@ def build_project_knowledge(project_data: dict) -> dict:
         health_status = "Critical"
 
     knowledge["engineering_health_score"] = f"{health_score}/100"
+    knowledge["engineering_health_value"] = health_score
     knowledge["engineering_health_status"] = health_status
 
     # Engineering Recommendations
