@@ -134,6 +134,32 @@ Report Engine
 Developer
 ```
 
+## Machine-Readable Output
+
+Every report command accepts `--json` and prints only JSON, ready to pipe into
+other tools:
+
+```bash
+btx knowledge --path . --json | jq '.data.engineering_health_value'
+```
+
+Each payload has the same envelope:
+
+```json
+{
+  "schema_version": 1,
+  "btx_version": "0.4.0",
+  "command": "knowledge",
+  "data": { "...": "..." }
+}
+```
+
+To fail a CI build when engineering health drops, use `--fail-under`:
+
+```bash
+btx dashboard --path . --fail-under 75
+```
+
 ## Development
 
 Requires Python 3.11+.
