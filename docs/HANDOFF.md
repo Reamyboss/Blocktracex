@@ -49,8 +49,9 @@ below N, for gating CI.
   (is there a `tests/` folder, a README, a `btx.toml`?) and on file counts.
   It doesn't read the code yet. Real code analysis is Phase 2 (#9).
 - **Python only.**
-- **Coaching text is generic and rule-based.** Field testing on real
-  projects (#7) is meant to find advice that doesn't fit.
+- **Known wrong results on real projects.** Field testing (#7, see
+  `docs/field-tests.md`) found 7 problems, tracked in #29–#35. The biggest:
+  "create a btx.toml" is the top advice even for excellent projects (#29).
 - **History is global.** Every project's snapshots go into
   `~/.btx_history.json` and are recorded as `"project": "Unknown"`. Tracked
   in #16.
@@ -186,8 +187,8 @@ In priority order:
 
 1. **Push the `v0.4.0` tag** (command above).
 2. **Finish Alpha 0.1 (#3).**
-   - #7: run `btx` on 3–5 real open-source projects and fix wrong or
-     Blocktracex-specific results (e.g. the coaching text above).
+   - Fix the field-test findings #29–#33 (see `docs/field-tests.md`).
+     #34 and #35 can follow.
    - #8: housekeeping. Move `src/btx/docs/` to `docs/`, pin dependency floors,
      and delete the merged branches (everything except `main`).
 3. **Release Alpha 0.1:** bump the version, tag it, and consider publishing to PyPI.
