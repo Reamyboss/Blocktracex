@@ -96,9 +96,9 @@ def new(name: str):
 
 
 @app.command()
-def init():
-    """Initialize the current directory."""
-    init_project()
+def init(path: Path = PROJECT_PATH_OPTION):
+    """Add a Blocktracex configuration (btx.toml) to an existing project."""
+    init_project(path)
 
 
 @app.command()

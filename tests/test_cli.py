@@ -78,3 +78,33 @@ def test_version_reports_installed_package_version():
 
     assert result.exit_code == 0
     assert f"v{package_version('blocktracex-cli')}" in result.output
+
+
+def test_init_creates_btx_toml_in_existing_project(tmp_path):
+    (tmp_path / "app.py").write_text("x = 1\n")
+
+    result = runner.invoke(app, ["init", "--path", str(tmp_path)])
+
+    assert result.exit_code == 0
+    config = (tmp_path / "btx.toml").read_text()
+    assert f'name = "{tmp_path.name}"' in config
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["app.py", "btx.toml"]
+
+
+def test_init_does_not_overwrite_existing_btx_toml(tmp_path):
+    (tmp_path / "btx.toml").write_text("# mine\n")
+
+    result = runner.invoke(app, ["init", "--path", str(tmp_path)])
+
+    assert result.exit_code == 0
+    assert "already exists" in ANSI_ESCAPE.sub("", result.output)
+    assert (tmp_path / "btx.toml").read_text() == "# mine\n"
+
+
+def test_knowledge_report_hides_machine_only_health_value(tmp_path):
+    result = runner.invoke(app, ["knowledge", "--path", str(tmp_path)])
+
+    output = ANSI_ESCAPE.sub("", result.output)
+
+    assert "Engineering Health Score" in output
+    assert "Engineering Health Value" not in output

@@ -27,6 +27,10 @@ def print_knowledge_report(knowledge: dict):
     )
 
     for key, value in knowledge.items():
+        # Machine-readable copy of engineering_health_score, for --json only.
+        if key == "engineering_health_value":
+            continue
+
         label = key.replace("_", " ").title()
 
         if label == "Knowledge Version":
